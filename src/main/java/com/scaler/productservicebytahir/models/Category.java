@@ -1,2 +1,13 @@
-package com.scaler.productservicebytahir.models;public class Category {
+package com.scaler.productservicebytahir.models;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class Category {
+    private Long id;
+    private String name;
+
+
 }
