@@ -108,26 +108,15 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product replaceProduct(Long id, Product product) throws ProductNotFoundException{
-        //the put method of restTemplate returns void there replaceProduct method wont be using according to
-        //fkapi therfore we'll use http method here....->we'll use exchange method a high level method "exchange" here
-        //the below code is from postForObject method
-        FakeStoreProductDto fakeStoreProductDTO = getFakeStoreProductDto(product) ;
-
-        RequestCallback requestCallback = restTemplate.httpEntityCallback(
-                fakeStoreProductDTO ,
-                FakeStoreProductDto.class);
-
-        HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor =
-                new HttpMessageConverterExtractor<>(FakeStoreProductDto.class,
-                        restTemplate.getMessageConverters());
-
-        FakeStoreProductDto response = restTemplate.execute(
-                "https://fakestoreapi.com/products/"+id,
-                HttpMethod.PUT, requestCallback, responseExtractor);
-
-        return convertFakeStoreProductToProduct(response);
+    public Product replaceProduct(Long id, Product product) throws ProductNotFoundException {
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(convertProductToFakeStoreProductDto(product), FakeStoreProductDto.class);
+        HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new HttpMessageConverterExtractor(FakeStoreProductDto.class, restTemplate.getMessageConverters());
+        FakeStoreProductDto responseDto =  restTemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.PUT, requestCallback, responseExtractor);
+        return convertFakeStoreProductToProduct(responseDto);
     }
+
+
+
     @Override
     public boolean deleteProduct(Long id) throws ProductNotFoundException{
         FakeStoreProductDto responseDto = restTemplate.exchange("https://fakestoreapi.com/products/" + id, HttpMethod.DELETE, null, FakeStoreProductDto.class).getBody();
