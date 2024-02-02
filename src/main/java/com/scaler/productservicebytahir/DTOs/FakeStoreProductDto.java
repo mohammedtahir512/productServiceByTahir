@@ -1,6 +1,5 @@
 package com.scaler.productservicebytahir.DTOs;
 
-import com.scaler.productservicebytahir.models.Category;
 import lombok.Getter;
 import lombok.Setter;
 

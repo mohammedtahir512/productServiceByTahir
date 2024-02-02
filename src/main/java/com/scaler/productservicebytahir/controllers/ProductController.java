@@ -3,16 +3,20 @@ package com.scaler.productservicebytahir.controllers;
 import com.scaler.productservicebytahir.exceptions.ProductNotFoundException;
 import com.scaler.productservicebytahir.models.Product;
 import com.scaler.productservicebytahir.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
     private ProductService productService;
-    public ProductController(ProductService productService){
+    private RestTemplate restTemplate;
+    public ProductController (@Qualifier("selfProductService")ProductService productService,RestTemplate restTemplate){
+        this.restTemplate=restTemplate;
         this.productService=productService;
     }
 
